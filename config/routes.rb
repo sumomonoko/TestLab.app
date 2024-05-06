@@ -1,4 +1,21 @@
 Rails.application.routes.draw do
+
+  scope module: :public do
+    root to: 'homes#top'
+    get 'about' => 'homes#about'
+    get 'ideal' => 'homes#ideal'
+
+    resources :users, only: [:show, :edit, :update]
+    resources :foods, only: [:index, :new, :show, :edit, :create, :update, :destroy]
+    resources :relationships, only: [:followers, :following]
+  end
+
+  namespace :admin do
+    resources :users, only: [:index, :show, :edit, :update]
+    resources :foods, only: [:index, :show, :destroy]
+    resources :genre, only: [:index, :create, :destroy]
+  end
+
   # 顧客用
   # URL /customers/sign_in ...
   devise_for :user,skip: [:passwords], controllers: {
